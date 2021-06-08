@@ -15,7 +15,7 @@ def home_view(request):
     current_month = datetime.datetime.now(tz).month
     current_year = datetime.datetime.now(tz).year
     month_list = []
-    i = current_month-1
+    i = current_month
     j = i-12
     while i != j:
         x = i % 12 or 12
