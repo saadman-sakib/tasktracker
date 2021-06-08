@@ -12,8 +12,8 @@ tz = pytz.timezone('Asia/Dhaka')
 
 @login_required(login_url='login')
 def home_view(request):
-    current_month = datetime.date.today(tz).month
-    current_year = datetime.date.today(tz).year
+    current_month = datetime.datetime.now(tz).month
+    current_year = datetime.datetime.now(tz).year
     month_list = []
     i = current_month-1
     j = i-12
@@ -80,9 +80,9 @@ def add_task(request):
 
 @login_required(login_url='login')
 def today_view(request):
-    year = datetime.date.today(tz).year
-    month = datetime.date.today(tz).month
-    day = datetime.date.today(tz).day
+    year = datetime.datetime.now(tz).year
+    month = datetime.datetime.now(tz).month
+    day = datetime.datetime.now(tz).day
     tasks = Task.objects.filter(author=request.user, date_created__year=year, date_created__month=month, date_created__day=day).order_by('-date_created')
     try:    
         done = Task.objects.filter(author=request.user, is_done=True, date_created__year=year, date_created__month=month, date_created__day=day).count()/Task.objects.filter(author=request.user, date_created__year=year, date_created__month=month, date_created__day=day).count()
