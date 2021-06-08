@@ -5,6 +5,10 @@ from django.contrib.auth.models import User
 from django.db.models.functions import ExtractMonth, ExtractYear
 import datetime, calendar
 from django.contrib.auth.decorators import login_required
+import pytz
+
+tz = pytz.timezone('Asia/Dhaka')
+
 
 @login_required(login_url='login')
 def home_view(request):
