@@ -1,0 +1,65 @@
+{% extends "tasks/base.html" %} 
+{% block content %} 
+<div class="progress" style="background-color: red;">
+    <div
+        class="progress-bar bg-success"
+        role="progressbar"
+        style="width:{{ done }}%"
+    >
+    {{ done }}%
+    </div>
+</div>
+<br><br>
+<div class="add jumbotron">
+    <form method="POST" action="/add_task/">
+        {% csrf_token %}
+        <div class="form-group">
+            <h1 class="heading">ADD TASKS:</h1>
+            <input type="text" name="description" class="form-control" placeholder="New Task" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">
+            ADD TASK
+        </button>
+    </form>
+</div>
+<br /><br />
+<div class="current">
+    <h1 class="heading" >CURRENT TASKS:</h1>
+    <ul class="list-group">
+        {% for task in tasks %}
+            {% if task.is_done == False %}
+                <li class="list-group-item">
+                    {{task.description}}
+                    <div>
+                        <a href="{% url 'done-task' task.id %}" class="btn btn-outline-success">
+                            Done
+                        </a>
+                        &nbsp;
+                        <a href="{% url 'task-delete' task.id %}" class="btn btn-outline-danger">
+                            Remove
+                        </a>
+                    </div>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+<br /><br />
+<div class="done">
+    <h1 class="heading">DONE TASKS:</h1>
+    <ul class="list-group">
+        {% for task in tasks %}
+            {% if task.is_done == True %}
+                <li class="list-group-item">
+                    {{task.description}}
+                    <div>
+                        <a href="{% url 'task-delete' task.id %}" class="btn btn-outline-danger">
+                            Remove
+                        </a>
+                    </div>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+{% endblock content %}

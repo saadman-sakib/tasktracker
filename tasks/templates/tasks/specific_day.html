@@ -1,0 +1,38 @@
+{% extends "tasks/base.html" %} 
+{% block content %} 
+    <h1 class="heading">{{tasks.1.date_created.date}}</h1>
+    <div class="progress" style="background-color: red;">
+        <div
+            class="progress-bar bg-success"
+            role="progressbar"
+            style="width:{{ done }}%"
+        >
+        {{ done }}%
+        </div>
+    </div>
+    <br><br>
+    <div class="current">
+        <h1 class="heading">UNDONE TASKS:</h1>
+        <ul class="list-group">
+            {% for task in tasks %}
+                {% if task.is_done == False %}
+                    <li class="list-group-item">
+                        {{ task.description }}
+                        <a href="{% url 'bring-back' task.id %}" class="btn btn-outline-primary" >start working</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    <br /><br />
+    <div class="done">
+        <h1 class="heading">DONE TASKS:</h1>
+        <ul class="list-group">
+            {% for task in tasks %}
+                {% if task.is_done %}
+                    <li class="list-group-item">{{ task.description }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock content %}

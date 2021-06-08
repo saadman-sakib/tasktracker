@@ -1,0 +1,30 @@
+.list-group-item{
+    display: flex;
+    justify-content: space-between;
+    font-weight: 300;
+}
+
+.heading{
+    font-weight: 300;
+}
+
+.add, .done, .current, .dash, .dash-graph{
+    padding: 2%;
+    border-radius: 10px;
+    border: solid rgb(206, 206, 206) 1px;
+}
+
+
+.dash{
+    display: flex;
+    justify-content: space-between;
+}
+
+.months{
+    border: solid rgb(145, 144, 144) 1px;
+}
+
+.center{
+    display: grid;
+    place-items: center;
+}

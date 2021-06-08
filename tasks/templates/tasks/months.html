@@ -1,0 +1,15 @@
+{% extends "tasks/base.html" %} 
+{% block content %} 
+    {% for year, months in months.items %}
+        <div class="center">
+            <h1 class="heading">{{ year }}</h1>
+            <div class="col-10">
+                <div class="list-group months">
+                    {% for index, month in months %}
+                    <a href="{% url 'month' year index %}" class="list-group-item list-group-item-action">{{ month }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock content %}
