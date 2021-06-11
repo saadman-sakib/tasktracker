@@ -19,15 +19,15 @@
     <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
 
     <div class="col-md-8">
-        {% if messages %}
-            {% for message in messages %}
+        {% if form.messages %}
+            {% for message in form.messages %}
                 <div class="alert alert-{{ message.tags }}">
                     {{ message }}
                 </div>
             {% endfor %}
         {% endif %}
     </div>
-    
+
     <div class="form-floating">
       <input name="email" type="email" class="form-control" id="inputEmail" placeholder="name@example.com">
       <label for="floatingInput">Email address</label>

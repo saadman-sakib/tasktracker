@@ -18,15 +18,15 @@
       <h1 class="h3 mb-3 fw-normal">Please Log In</h1>
 
       <div class="col-md-8">
-          {% if messages %}
-              {% for message in messages %}
+          {% if form.messages %}
+              {% for message in form.messages %}
                   <div class="alert alert-{{ message.tags }}">
                       {{ message }}
                   </div>
               {% endfor %}
           {% endif %}
       </div>
-      
+
       <div class="form-floating">
         <input id="username" style="border-bottom-left-radius:0px; border-bottom-right-radius:0px" name="username" type="text" class="form-control" placeholder="username">
         <label for="floatingInput">Username</label>
