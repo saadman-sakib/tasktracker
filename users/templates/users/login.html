@@ -14,28 +14,39 @@
   <main class="form-signin">
     <form method="POST">
       {% csrf_token %}
-      <img style="padding-right: 20%;" src="{% static 'users/logo.svg' %}" alt="" width="352">
+      <img  src="{% static 'users/logo.svg' %}" alt="" width="352">
       <h1 class="h3 mb-3 fw-normal">Please Log In</h1>
-
-      <div class="col-md-8">
-          {% if form.messages %}
-              {% for message in form.messages %}
+      <div class="form-floating" style="padding-right: 7%;">
+          {% if form.non_field_errors %}
+            <ul>
+              {% for error in form.non_field_errors %}
+                  <div class="alert alert-danger">
+                    {{ error }}
+                  </div>
+              {% endfor %}
+            </ul>
+          {% endif %}
+          {% if messages %}
+              {% for message in messages %}
                   <div class="alert alert-{{ message.tags }}">
                       {{ message }}
                   </div>
               {% endfor %}
           {% endif %}
       </div>
-
       <div class="form-floating">
         <input id="username" style="border-bottom-left-radius:0px; border-bottom-right-radius:0px" name="username" type="text" class="form-control" placeholder="username">
         <label for="floatingInput">Username</label>
+        <small>{{ form.username.help_text }}</small>
+        <small>{{ form.username.errors }}</small>
       </div>
 
       <div  class="form-floating" >
         <input
         id="inputPassword" name="password" type="password" class="form-control" placeholder="Password">
         <label  for="floatingPassword">Password</label>
+        <small>{{ form.password.help_text }}</small>
+        <small>{{ form.password.errors }}</small>
       </div>
 
       <div class="checkbox mb-3">

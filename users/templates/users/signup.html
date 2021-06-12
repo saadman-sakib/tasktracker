@@ -18,31 +18,48 @@
     <img style="padding-right: 20%;" src="{% static 'users/logo.svg' %}" alt="" width="352">
     <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
 
-    <div class="col-md-8">
-        {% if form.messages %}
-            {% for message in form.messages %}
-                <div class="alert alert-{{ message.tags }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-    </div>
+    <div class="form-floating" style="padding-right: 7%;">
+      {% if form.non_field_errors %}
+        <ul>
+          {% for error in form.non_field_errors %}
+              <div class="alert alert-danger">
+                {{ error }}
+              </div>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      {% if messages %}
+          {% for message in messages %}
+              <div class="alert-{{ message.tags }}">
+                  {{ message }}
+              </div>
+          {% endfor %}
+      {% endif %}
+  </div>
 
     <div class="form-floating">
       <input name="email" type="email" class="form-control" id="inputEmail" placeholder="name@example.com">
       <label for="floatingInput">Email address</label>
+      <!-- <small>{{ form.email.help_text }}</small> -->
+      <div class="alert-danger" >{{ form.email.errors }}</div>
     </div>
     <div class="form-floating">
       <input name="username" style="border-radius: 0px;"  type="text" class="form-control" id="floatingInput2" placeholder="username">
       <label for="floatingInput">Username</label>
+      <!-- <small>{{ form.username.help_text }}</small> -->
+      <div class="alert-danger" >{{ form.username.errors }}</div>
     </div>
     <div class="form-floating" >
       <input name="password1"  style="margin:0px; border-radius: 0px;" type="password" class="form-control" id="floatingPassword1" placeholder="Password">
       <label  for="floatingPassword">Password</label>
+      <!-- <small>{{ form.password1.help_text }}</small> -->
+      <div class="alert-danger" >{{ form.password1.errors }}</div>
     </div>
     <div class="form-floating"  >
       <input name="password2" type="password" class="form-control" id="floatingPassword" placeholder="Confirm Password">
       <label for="floatingPassword">Confirm Password</label>
+      <!-- <small>{{ form.password2.help_text }}</small> -->
+      <div class="alert-danger" >{{ form.password2.errors }}</div>
     </div>
     <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
   </form>
