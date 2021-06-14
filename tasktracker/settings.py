@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-# import django_heroku
+import django_heroku
 from pathlib import Path
 import os
 
@@ -127,4 +127,4 @@ STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
 
-# django_heroku.settings(locals())
+django_heroku.settings(locals())
