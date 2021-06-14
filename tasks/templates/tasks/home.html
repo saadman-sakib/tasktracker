@@ -13,7 +13,12 @@
         <br /><br />
         <div class="dash-graph">
             <div
-                id="chartContainer"
+                id="chartContainer1"
+                style="height: 370px; width: 100%"
+            ></div>
+            <br><br><br>
+            <div
+                id="chartContainer2"
                 style="height: 370px; width: 100%"
             ></div>
         </div>
@@ -21,10 +26,66 @@
 
     <script>
         window.onload = function () {
-            var chart = new CanvasJS.Chart("chartContainer", {
+            var chart1 = new CanvasJS.Chart("chartContainer1", {
                 animationEnabled: true,
                 title: {
-                    text: "Your Progress Timeline",
+                    text: "Your Daily Progress Timeline",
+                },
+                axisX: {
+                    valueFormatString: "DD MMM",
+                },
+                axisY: {
+                    title: "Number of Tasks",
+                },
+                legend: {
+                    cursor: "pointer",
+                    fontSize: 16,
+                    itemclick: toggleDataSeries,
+                },
+                toolTip: {
+                    shared: true,
+                },
+                data: [
+                    {
+                        name: "Done Tasks",
+                        type: "spline",
+                        showInLegend: true,
+                        dataPoints: [
+                            {% for date, nums in day_data_points.items %}
+                                 { x: new Date({{date.0}}, {{date.1|add:-1 }}, {{date.2}} ), y: {{nums.0}} },
+                            {% endfor %}
+                        ],
+                    },
+                    {
+                        name: "Undone Tasks",
+                        type: "spline",
+                        showInLegend: true,
+                        dataPoints: [
+                            {% for date, nums in day_data_points.items %}
+                                 { x: new Date({{date.0}}, {{date.1|add:-1}}, {{date.2}} ), y: {{nums.1}} },
+                            {% endfor %}
+                        ],
+                    },
+                ],
+            });
+            chart1.render();
+
+            function toggleDataSeries(e) {
+                if (
+                    typeof e.dataSeries.visible === "undefined" ||
+                    e.dataSeries.visible
+                ) {
+                    e.dataSeries.visible = false;
+                } else {
+                    e.dataSeries.visible = true;
+                }
+                chart1.render();
+            }
+
+            var chart2 = new CanvasJS.Chart("chartContainer2", {
+                animationEnabled: true,
+                title: {
+                    text: "Your Monthly Progress Timeline",
                 },
                 axisX: {
                     valueFormatString: "MMM YY",
@@ -46,7 +107,7 @@
                         type: "spline",
                         showInLegend: true,
                         dataPoints: [
-                            {% for date, nums in data_points.items %}
+                            {% for date, nums in month_data_points.items %}
                                  { x: new Date({{date.0}}, {{date.1|add:-1 }}, 0), y: {{nums.0}} },
                             {% endfor %}
                         ],
@@ -56,14 +117,14 @@
                         type: "spline",
                         showInLegend: true,
                         dataPoints: [
-                            {% for date, nums in data_points.items %}
+                            {% for date, nums in month_data_points.items %}
                                  { x: new Date({{date.0}}, {{date.1|add:-1  }}, 0), y: {{nums.1}} },
                             {% endfor %}
                         ],
                     },
                 ],
             });
-            chart.render();
+            chart2.render();
 
             function toggleDataSeries(e) {
                 if (
@@ -74,7 +135,7 @@
                 } else {
                     e.dataSeries.visible = true;
                 }
-                chart.render();
+                chart2.render();
             }
         };
     </script>

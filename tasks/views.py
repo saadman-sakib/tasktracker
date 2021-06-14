@@ -4,35 +4,38 @@ from .models import Task
 from django.contrib.auth.models import User
 from django.db.models.functions import ExtractMonth, ExtractYear
 import datetime, calendar
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth.decorators import login_required
 import pytz
 
-tz = pytz.timezone('Asia/Dhaka')
-
+TZ = pytz.timezone('Asia/Dhaka')
 
 @login_required(login_url='login')
 def home_view(request):
-    current_month = datetime.datetime.now(tz).month
-    current_year = datetime.datetime.now(tz).year
-    month_list = []
-    i = current_month
-    j = i-12
-    while i != j:
-        x = i % 12 or 12
-        month_list.append((current_year,x))
-        i = i-1
-        if i == 0:
-            current_year -= 1
-    data_points = {}
-    for year, month in month_list:
+    today = datetime.datetime.now(TZ)
+
+    month_data_points = {} 
+    for i in range(12):
+        date = today - relativedelta(months=i)
+        day, month, year = date.day, date.month, date.year
         num_of_done = Task.objects.filter(author=request.user, date_created__year=year, date_created__month=month, is_done=True).count()
         num_of_undone = Task.objects.filter(author=request.user, date_created__year=year, date_created__month=month, is_done=False).count()
-        data_points[(year,month)] = [num_of_done, num_of_undone]
+        month_data_points[(year, month)] = [num_of_done, num_of_undone]
+    
+    day_data_points = {} 
+    for i in range(30):
+        date = today - datetime.timedelta(days=i)
+        day, month, year = date.day, date.month, date.year
+        num_of_done = Task.objects.filter(author=request.user, date_created__year=year, date_created__month=month, date_created__day=day, is_done=True).count()
+        num_of_undone = Task.objects.filter(author=request.user, date_created__year=year, date_created__month=month, date_created__day=day, is_done=False).count()
+        day_data_points[(year, month, day)] = [num_of_done, num_of_undone]
 
     done = Task.objects.filter(author=request.user, is_done=True).count()
     undone = Task.objects.filter(author=request.user, is_done=False).count()
 
-    return render(request, 'tasks/home.html', {'done':done,'undone':undone, 'data_points':data_points})
+    return render(request, 'tasks/home.html', {'done':done,'undone':undone, 
+                                               'day_data_points':day_data_points, 
+                                               'month_data_points':month_data_points})
 
 @login_required(login_url='login')
 def months_view(request):
@@ -80,9 +83,9 @@ def add_task(request):
 
 @login_required(login_url='login')
 def today_view(request):
-    year = datetime.datetime.now(tz).year
-    month = datetime.datetime.now(tz).month
-    day = datetime.datetime.now(tz).day
+    year = datetime.datetime.now(TZ).year
+    month = datetime.datetime.now(TZ).month
+    day = datetime.datetime.now(TZ).day
     tasks = Task.objects.filter(author=request.user, date_created__year=year, date_created__month=month, date_created__day=day).order_by('-date_created')
     try:    
         done = Task.objects.filter(author=request.user, is_done=True, date_created__year=year, date_created__month=month, date_created__day=day).count()/Task.objects.filter(author=request.user, date_created__year=year, date_created__month=month, date_created__day=day).count()
