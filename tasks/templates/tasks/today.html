@@ -30,7 +30,7 @@
             {% if task.is_done == False %}
                 <li class="list-group-item">
                     {{task.description}}
-                    <div>
+                    <div class="list-group-item"  style="padding:0px; border-width: 0px;">
                         <a href="{% url 'done-task' task.id %}" class="btn btn-outline-success">
                             Done
                         </a>
